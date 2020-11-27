@@ -1,5 +1,5 @@
 const curl = require('curl-cmd');
-const url = require('url');
+const {parse, resolve} = require('url');
 
 const normaliseKeys = (obj) => {
     return Object.entries(obj).reduce((acc, [key, value]) => {
@@ -14,7 +14,8 @@ function axiosCurl(axios, {
     log = (str) => { console.log(str) }
 } = {}) {
     axios.interceptors.request.use(function (config) {
-        const {hostname, port, path} = url.parse(config.url)
+        const url = config.baseURL ? resolve(config.baseURL, config.url) : config.url;
+        const {hostname, port, path} = parse(url)
         const configHeaders = normaliseKeys(config.headers);
         const {
             common, delete: del, get, head, post, put, patch,
