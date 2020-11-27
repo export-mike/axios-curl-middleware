@@ -1,0 +1,15 @@
+{
+  "name": "axios-curl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "curl-cmd": "^0.0.1"
+  },
+  "peerDependencies": {
+    "axios": "^0"
+  },
+  "devDependencies": {
+    "axios": "^0.21.0"
+  }
+}
