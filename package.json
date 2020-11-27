@@ -1,5 +1,5 @@
 {
-  "name": "axios-curl",
+  "name": "axios-curl-middleware",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
