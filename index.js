@@ -11,7 +11,8 @@ const normaliseKeys = (obj) => {
 }
 
 function axiosCurl(axios, {
-    log = (str) => { console.log(str) }
+    log = (str) => { console.log(str) },
+    writeToFS = true
 } = {}) {
     axios.interceptors.request.use(function (config) {
         const url = config.baseURL ? resolve(config.baseURL, config.url) : config.url;
@@ -38,7 +39,23 @@ function axiosCurl(axios, {
             path: path,
             method: config.method,
             headers,
-        })} ${json}`)
+        })} ${json}`);
+        if (writeToFS) {
+            const fs = require('fs');
+            const kebabCase = require('lodash.kebabcase');
+            const process = require('process');
+            const util = require('util');
+            const { join: joinPath } = require('path');
+            const promisify = util.promisify(fs.writeFile);
+            const writeFile = promisify;
+            writeFile(joinPath(process.cwd(), `./src/curls/${kebabCase(path)}.curl.txt`), curl.cmd({
+                hostname,
+                port,
+                path,
+                method: config.method,
+                headers,
+            }), 'utf-8').catch(e => console.error(e));
+        }
         return config;
     });
 }
