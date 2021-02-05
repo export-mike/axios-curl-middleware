@@ -12,7 +12,7 @@ const normaliseKeys = (obj) => {
 
 function axiosCurl(axios, {
     log = (str) => { console.log(str) },
-    writeToFS = true
+    writeToFS = false
 } = {}) {
     axios.interceptors.request.use(function (config) {
         const url = config.baseURL ? resolve(config.baseURL, config.url) : config.url;
@@ -48,6 +48,13 @@ function axiosCurl(axios, {
             const { join: joinPath } = require('path');
             const promisify = util.promisify(fs.writeFile);
             const writeFile = promisify;
+            fs.mkdir(joinPath(__dirname, 'curls'),
+                { recursive: true}, (err) => {
+                    if (err) {
+                        return console.error(err);
+                    }
+                }
+            )
             writeFile(joinPath(process.cwd(), `./src/curls/${kebabCase(path)}.curl.txt`), curl.cmd({
                 hostname,
                 port,
