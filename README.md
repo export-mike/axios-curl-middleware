@@ -18,4 +18,6 @@ curl -X get -H 'accept: application/json, text/plain, */*' 'http://dog.ceo:80/ap
 ```
 
 
-> axiosCurl(axios, [{ log }])
+> axiosCurl(axios, [{ log, writeToFS }])
+
+Changing *writeToFS* to true will write an individual file for each curl into a curls folder.
